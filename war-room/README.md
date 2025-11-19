@@ -1,293 +1,66 @@
-# API de Gerenciamento de Tarefas
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Sistema de gerenciamento de tarefas desenvolvido com Laravel 10+ e PostgreSQL, utilizando JWT para autenticação.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## 🚀 Tecnologias
+## About Laravel
 
-- **Laravel 10+** - Framework PHP
-- **PostgreSQL** - Banco de dados
-- **JWT Auth** - Autenticação via tokens
-- **Docker** - Containerização
-- **PHP 8.3** - Linguagem
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## 📋 Pré-requisitos
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-- Docker
-- Docker Compose
-- Git
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## 🔧 Instalação e Configuração
+## Learning Laravel
 
-### 1. Clone o repositório
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-```bash
-git clone https://github.com/CristianBernardes/desafio-finch.git
-cd desafio-finch
-```
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-### 2. Subir os containers Docker
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-```bash
-docker compose up -d
-```
+## Laravel Sponsors
 
-Este comando irá subir os seguintes containers:
-- `php83-app` - Aplicação PHP/Laravel
-- `postgres` - Banco de dados PostgreSQL
-- `nginx` - Servidor web
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### 3. Acessar o container PHP
+### Premium Partners
 
-```bash
-docker exec -it php83-app bash
-```
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
-### 4. Instalar dependências do Composer
+## Contributing
 
-```bash
-composer install
-```
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### 5. Configurar o arquivo .env
+## Code of Conduct
 
-Copie o arquivo de exemplo:
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-```bash
-cp .env.example .env
-```
+## Security Vulnerabilities
 
-O arquivo `.env.example` já vem com todas as configurações necessárias, incluindo:
-- `APP_KEY` - Chave da aplicação
-- `JWT_SECRET` - Chave para autenticação JWT
-- Configurações do banco de dados
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-### 6. Executar as migrations
+## License
 
-```bash
-php artisan migrate
-```
-
-### 7. (Opcional) Popular o banco com dados de exemplo
-
-```bash
-php artisan db:seed
-```
-
-Isso irá criar:
-- 3 usuários de exemplo (admin, editor, viewer)
-- 100 tarefas aleatórias
-
-### 8. Sair do container
-
-```bash
-exit
-```
-
-## 🌐 Acessando a API
-
-A API estará disponível em: `http://localhost:8080`
-
-## 📚 Endpoints Disponíveis
-
-### Autenticação
-
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| POST | `/api/auth/register` | Registrar novo usuário |
-| POST | `/api/auth/login` | Fazer login |
-| POST | `/api/auth/logout` | Fazer logout |
-| POST | `/api/auth/refresh` | Renovar token |
-| GET | `/api/auth/me` | Dados do usuário autenticado |
-
-### Tarefas (Requer autenticação)
-
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/tasks` | Listar tarefas |
-| GET | `/api/tasks/{id}` | Buscar tarefa por ID |
-| POST | `/api/tasks` | Criar nova tarefa |
-| PUT | `/api/tasks/{id}` | Atualizar tarefa |
-| DELETE | `/api/tasks/{id}` | Deletar tarefa |
-
-### Filtros disponíveis para listagem de tarefas:
-
-- `status` - Filtrar por status (pending, in_progress, completed)
-- `title` - Buscar por título (LIKE)
-- `description` - Buscar por descrição (LIKE)
-- `assigned_to` - Filtrar por usuário atribuído (ID)
-- `sort` - Campo para ordenação (title, status, assigned_to, created_at, updated_at)
-- `order` - Ordem (asc, desc)
-- `per_page` - Itens por página (máx: 100)
-- `page` - Número da página
-
-## 🧪 Testando a API com Postman
-
-1. Importe a collection localizada em: `postman_collection.json` (raiz do projeto, fora da pasta war-room)
-2. Execute o endpoint de Login para gerar o token
-3. Copie o token retornado no campo `access_token`
-4. Cole o token no header `Authorization` dos demais endpoints no formato: `Bearer {seu-token}`
-
-## 📖 Regras de Negócio
-
-### Status de Tarefas
-
-- **pending** (Pendente) - Estado inicial
-- **in_progress** (Em Andamento)
-- **completed** (Completo)
-
-### Transições de Status Permitidas
-
-- `pending` → `in_progress` ou `completed`
-- `in_progress` → `completed` ou `pending`
-- `completed` → **Nenhuma** (tarefas concluídas não podem ter status alterado)
-
-### Funcionalidades Especiais
-
-- ✅ Campo `completed_in` preenchido automaticamente ao marcar tarefa como concluída
-- ✅ Tarefas concluídas não podem ter o status alterado
-- ✅ Soft delete em tarefas (deletadas logicamente)
-- ✅ Relacionamento com usuário (quando usuário é deletado, tarefa fica sem atribuição)
-- ✅ Validações em português
-- ✅ Paginação nas listagens
-
-## 🛠️ Comandos Úteis
-
-### Limpar caches
-
-```bash
-docker exec php83-app php artisan optimize:clear
-```
-
-### Ver logs
-
-```bash
-docker exec php83-app tail -f storage/logs/laravel.log
-```
-
-### Executar tinker (console interativo)
-
-```bash
-docker exec -it php83-app php artisan tinker
-```
-
-### Parar os containers
-
-```bash
-docker compose down
-```
-
-### Reiniciar os containers
-
-```bash
-docker compose restart
-```
-
-## 📁 Estrutura do Projeto
-
-```
-war-room/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── AuthController.php
-│   │   │   └── TaskController.php
-│   │   ├── Requests/
-│   │   │   ├── CreatedTaskRequest.php
-│   │   │   └── UpdateTaskRequest.php
-│   │   └── Resources/
-│   │       └── TaskResource.php
-│   ├── Models/
-│   │   ├── Task.php
-│   │   └── User.php
-│   ├── Observers/
-│   │   └── TaskObserver.php
-│   └── Services/
-│       ├── BaseService.php
-│       ├── TaskService.php
-│       └── AuthService.php
-├── database/
-│   ├── migrations/
-│   ├── seeders/
-│   └── factories/
-└── routes/
-    └── api.php
-```
-
-## 🔐 Autenticação
-
-A API utiliza JWT (JSON Web Tokens) para autenticação. Inclua o token no header das requisições:
-
-```
-Authorization: Bearer {seu-token-aqui}
-```
-
-## 📝 Exemplo de Uso
-
-### 1. Registrar usuário
-
-```bash
-curl -X POST http://localhost:8080/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "João Silva",
-    "email": "joao@example.com",
-    "password": "senha123",
-    "password_confirmation": "senha123"
-  }'
-```
-
-### 2. Fazer login
-
-```bash
-curl -X POST http://localhost:8080/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "joao@example.com",
-    "password": "senha123"
-  }'
-```
-
-### 3. Criar tarefa
-
-```bash
-curl -X POST http://localhost:8080/api/tasks \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {seu-token}" \
-  -d '{
-    "title": "Implementar nova funcionalidade",
-    "description": "Descrição detalhada da tarefa",
-    "status": "pending",
-    "assigned_to": 1
-  }'
-```
-
-### 4. Listar tarefas
-
-```bash
-curl -X GET "http://localhost:8080/api/tasks?status=pending&per_page=10" \
-  -H "Authorization: Bearer {seu-token}"
-```
-
-## 🐛 Troubleshooting
-
-### Erro de permissão
-
-```bash
-docker exec php83-app chmod -R 777 storage bootstrap/cache
-```
-
-### Recriar o banco de dados
-
-```bash
-docker exec php83-app php artisan migrate:fresh --seed
-```
-
-### Ver logs de erro do container
-
-```bash
-docker logs php83-app
-```
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
