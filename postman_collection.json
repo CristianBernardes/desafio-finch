@@ -1,0 +1,628 @@
+{
+    "info": {
+        "_postman_id": "jwt-laravel-api-collection",
+        "name": "Desafio FINCH",
+        "description": "Collection para testar a API Laravel com autenticação JWT e gerenciamento de tarefas",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Register",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Novo Usuário\",\n    \"email\": \"novo@example.com\",\n    \"password\": \"senha123\",\n    \"password_confirmation\": \"senha123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/register",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "register"
+                            ]
+                        },
+                        "description": "Registra um novo usuário no sistema"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.environment.set(\"jwt_token\", jsonData.access_token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        },
+                        "description": "Autentica um usuário e retorna o token JWT"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Me",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "me"
+                            ]
+                        },
+                        "description": "Retorna os dados do usuário autenticado com seus perfis"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/logout",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "logout"
+                            ]
+                        },
+                        "description": "Invalida o token JWT do usuário autenticado"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Refresh Token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.environment.set(\"jwt_token\", jsonData.access_token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/refresh",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "refresh"
+                            ]
+                        },
+                        "description": "Atualiza o token JWT"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints de autenticação JWT"
+        },
+        {
+            "name": "Tasks",
+            "item": [
+                {
+                    "name": "List Tasks",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks?per_page=20&page=1&sort=created_at&order=desc",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "per_page",
+                                    "value": "20",
+                                    "description": "Itens por página (máx 100)"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Número da página"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "created_at",
+                                    "description": "Campo de ordenação: title, status, assigned_to, created_at, updated_at"
+                                },
+                                {
+                                    "key": "order",
+                                    "value": "desc",
+                                    "description": "Ordem: asc ou desc"
+                                },
+                                {
+                                    "key": "title",
+                                    "value": "",
+                                    "description": "Filtrar por título",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "",
+                                    "description": "Filtrar por status: pending, in_progress, completed",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "assigned_to",
+                                    "value": "",
+                                    "description": "Filtrar por ID do usuário",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "",
+                                    "description": "Filtrar por descrição",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "description": "Lista todas as tarefas com paginação e filtros opcionais"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Task by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks",
+                                "1"
+                            ]
+                        },
+                        "description": "Busca uma tarefa específica por ID"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Task",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Nova tarefa de exemplo\",\n    \"description\": \"Descrição detalhada da tarefa\",\n    \"status\": \"pending\",\n    \"assigned_to\": 2\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ]
+                        },
+                        "description": "Cria uma nova tarefa\n\nCampos:\n- title (obrigatório): Título da tarefa\n- description (opcional): Descrição detalhada\n- status (obrigatório): pending, in_progress ou completed\n- assigned_to (opcional): ID do usuário responsável"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Task",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Tarefa atualizada\",\n    \"description\": \"Descrição modificada\",\n    \"status\": \"in_progress\",\n    \"assigned_to\": 3\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks",
+                                "1"
+                            ]
+                        },
+                        "description": "Atualiza uma tarefa existente\n\nValidações de transição de status:\n- pending → in_progress, completed\n- in_progress → completed, pending\n- completed → (não pode mudar)\n\nQuando marcada como completed, o campo completed_in é preenchido automaticamente."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Task",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks",
+                                "1"
+                            ]
+                        },
+                        "description": "Deleta uma tarefa (soft delete)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Filter Tasks by Status",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks?status=in_progress",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "in_progress",
+                                    "description": "pending, in_progress ou completed"
+                                }
+                            ]
+                        },
+                        "description": "Exemplo de filtro por status"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Filter Tasks by User",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks?assigned_to=2",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "assigned_to",
+                                    "value": "2",
+                                    "description": "ID do usuário"
+                                }
+                            ]
+                        },
+                        "description": "Exemplo de filtro por usuário atribuído"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Search Tasks by Title",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{jwt_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/tasks?title=implementar",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "title",
+                                    "value": "implementar",
+                                    "description": "Busca parcial no título"
+                                }
+                            ]
+                        },
+                        "description": "Exemplo de busca por título (LIKE)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints para gerenciamento de tarefas (CRUD completo)"
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8080",
+            "type": "string"
+        },
+        {
+            "key": "jwt_token",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}
